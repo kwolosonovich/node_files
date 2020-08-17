@@ -12,3 +12,4 @@ const cat = () => {
 }
 
 cat()
+
