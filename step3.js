@@ -1,12 +1,11 @@
 const process = require("process");
 const fs = require("fs");
 const axios = require("axios");
-const newUrl = new URL(
-  "http://curric.rithmschool.com/springboard/exercises/node-files/"
-);
+let path = process.argv[2];
 
-const cat = () => {
-  fs.readFile("./one.txt", "utf8", function (err, data) {
+// if path is a text file, log file content
+const cat = (path) => {
+  fs.readFile(path, "utf8", function(err, data) {
     if (err) {
       console.log(err);
       process.exit(1);
@@ -15,8 +14,7 @@ const cat = () => {
   });
 };
 
-cat();
-
+// if path is a URL, log URL content
 const webCat = async (path) => {
   console.log(path);
   try {
@@ -28,8 +26,17 @@ const webCat = async (path) => {
   }
 };
 
-if (typeof newUrl === "object") {
-  webCat(newUrl.href);
-} else {
-  cat();
+// check if path is a URL object or a file string
+const checkType = (path) => {
+    try {
+        const newUrl = new URL(
+        path
+        );
+        webCat(newUrl.href);
+    } catch {
+        console.log('file')
+        cat(path)
+    }
 }
+
+checkType(path)
