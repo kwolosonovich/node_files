@@ -18,7 +18,7 @@ const cat = () => {
     } else if (w !== null) {
       fs.writeFile(output, data, "utf8", function (err) {
         if (err) {
-          console.error(`Error: ${err}`);
+          console.error(`Error with: ${output}: ${err}`);
           process.exit(1);
         }
       });
@@ -27,24 +27,23 @@ const cat = () => {
 };
 
 // if path is a URL, log URL content or write to file
-const webCat = async (path) => {
-
-    try {
-      const res = await axios.get(path);
-      if (w === null) {
-        console.log(res.data);
-      } else {
-        fs.writeFile(output, res.data, 'utf8', function (err) {
-          if (err) {
-            console.error(`Error with path: ${path}: ${err}`);
-            process.exit(1);
-          } 
-        })
-      }
-    } catch {
-      console.error(`Error fetching ${url}: ${err}`);
-      process.exit(1);
+const webCat = async (newUrl) => {
+  try {
+    const res = await axios.get(newUrl);
+    if (w === null) {
+      console.log(res.data);
+    } else {
+      fs.writeFile(output, res.data, "utf8", function (err) {
+        if (err) {
+          console.error(`Error with: ${output}: ${err}`);
+          process.exit(1);
+        }
+      });
     }
+  } catch {
+    console.error(`Error fetching ${newUrl}: ${err}`);
+    process.exit(1);
+  }
 };
 
 // check if path is a URL object or a file string
